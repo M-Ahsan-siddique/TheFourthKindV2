@@ -1,4 +1,4 @@
-﻿# The Fourth Kind — Specialty Coffee
+# The Fourth Kind — Specialty Coffee
 
 > **"Coffee is an odyssey across sensory dimensions — where terroir meets celestial precision in every brew."**
 
@@ -58,6 +58,7 @@ The Fourth kind/
 │   └── index.html              # Catalog overview and product selection
 ├── .gitignore
 ├── README.md
+├── server.js                   # Zero-dependency local development server
 └── index.html                  # Main homepage
 ```
 
@@ -73,18 +74,15 @@ No build tools or bundlers are required!
    cd TheFourthKindV2
    ```
 
-2. **Open the project:**
-   Simply double-click `index.html` to open it in your browser, or serve it using any local static server:
+2. **Run locally:**
+   Start the built-in zero-dependency server:
    ```bash
-   # Using Python 3:
-   python -m http.server 8000
-
-   # Or using Node.js:
-   npx serve
+   node server.js
    ```
+   *Or simply double-click `index.html` to open directly in your browser.*
 
 3. **Visit in browser:**
-   Open `http://localhost:8000` (or the port specified).
+   Open `http://localhost:3000`.
 
 ---
 
