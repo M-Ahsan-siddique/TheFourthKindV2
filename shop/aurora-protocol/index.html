@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event Horizon — The Fourth Kind</title>
+  <title>Aurora Protocol — The Fourth Kind</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -22,7 +22,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* TOP BAR WITH BACK TO SHOP */
     .top-bar {
       max-width: 1200px;
       margin: 0 auto;
@@ -45,7 +44,6 @@
       transform: translateX(-3px);
     }
 
-    /* SITE HEADER */
     header.site-header {
       max-width: 1200px;
       margin: 0 auto;
@@ -133,7 +131,6 @@
       justify-content: center;
     }
 
-    /* PRODUCT LAYOUT */
     .product-container {
       max-width: 1200px;
       margin: 48px auto 100px;
@@ -167,7 +164,6 @@
       transform: scale(1.04);
     }
 
-    /* DETAILS */
     .product-details {
       display: flex;
       flex-direction: column;
@@ -269,7 +265,261 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
 
-    /* Cart styles moved to cart.css */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 99998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .cart-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -480px;
+      width: 440px;
+      max-width: 100vw;
+      height: 100vh;
+      background-color: #101010;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.7);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      color: #ffffff;
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cart-header-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .cart-items-total {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .cart-close-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .cart-close-btn:hover {
+      color: #ffffff;
+      transform: scale(1.15);
+    }
+
+    .cart-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+    }
+
+    .cart-empty {
+      height: 100%;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .empty-title {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+    }
+
+    .empty-desc {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+      max-width: 240px;
+    }
+
+    .cart-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .item-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      background-color: #161616;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .item-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .item-name {
+      font-size: 14px;
+      font-weight: 400;
+      color: #ffffff;
+    }
+
+    .item-remove {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .item-remove:hover {
+      color: #ff5e5e;
+    }
+
+    .item-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .qty-selector {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .qty-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      padding: 4px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .qty-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 0 8px;
+    }
+
+    .item-price {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .cart-footer {
+      padding: 24px 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #0d0d0d;
+    }
+
+    .cart-subtotal-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .subtotal-label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .subtotal-amount {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .cart-shipping-note {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 20px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 16px;
+      background-color: #ffffff;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Kumbh Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .checkout-btn:hover {
+      background-color: #f0f0f0;
+    }
 
     @media (max-width: 900px) {
       .product-container {
@@ -283,8 +533,8 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="../../cart.css" />
-  <link rel="stylesheet" href="../../footer.css" />
+  <link rel="stylesheet" href="../../assets/css/cart.css" />
+  <link rel="stylesheet" href="../../assets/css/footer.css" />
 </head>
 <body>
 
@@ -301,7 +551,7 @@
   <!-- SITE HEADER -->
   <header class="site-header">
     <a href="../../index.html" class="brand-logo">
-      <img src="../../logo.png" alt="The Fourth Kind Logo" class="brand-logo-img" />
+      <img src="../../assets/images/logo.png" alt="The Fourth Kind Logo" class="brand-logo-img" />
       <span class="brand-logo-text">THE FOURTH KIND</span>
     </a>
     <div class="nav-links">
@@ -319,44 +569,44 @@
   <!-- PRODUCT MAIN CONTENT -->
   <main class="product-container">
     <div class="product-image-container">
-      <img src="../../assits/brazilian_origin.png" alt="Event Horizon Coffee" class="product-image" />
+      <img src="../../assets/images/ethiopian_origin.png" alt="Aurora Protocol Coffee" class="product-image" />
     </div>
 
     <div class="product-details">
       <div class="category-label">SINGLE ORIGIN COFFEE</div>
-      <h1 class="product-title">EVENT HORIZON</h1>
-      <div class="product-subtitle">Event Horizon</div>
+      <h1 class="product-title">AURORA PROTOCOL</h1>
+      <div class="product-subtitle">Aurora Protocol</div>
       <div class="product-price">$1.1K</div>
 
       <div class="product-specs">
         <div class="spec-item">
           <span class="spec-label">ORIGIN</span>
-          <span class="spec-value">Brazil (Sul de Minas)</span>
+          <span class="spec-value">Ethiopia (Yirgacheffe)</span>
         </div>
         <div class="spec-item">
           <span class="spec-label">ROAST LEVEL</span>
-          <span class="spec-value">Medium</span>
+          <span class="spec-value">Light-Medium</span>
         </div>
         <div class="spec-item">
           <span class="spec-label">NOTES</span>
-          <span class="spec-value">Toasted Hazelnut, Milk Chocolate, Caramel</span>
+          <span class="spec-value">Bergamot, Jasmine, Candied Lemon</span>
         </div>
         <div class="spec-item">
           <span class="spec-label">PROCESS</span>
-          <span class="spec-value">Natural</span>
+          <span class="spec-value">Washed</span>
         </div>
       </div>
 
       <p class="product-description">
-        Event Horizon draws you in with its vibrant warmth and rich, creamy body. Handpicked in the Sul de Minas region of Brazil, this natural process coffee reveals deep layers of toasted hazelnut, smooth milk chocolate, and sweet caramelized brown sugar.
+        Aurora Protocol is an ethereal cup cultivated in the mist-shrouded peaks of Yirgacheffe. Renowned for vibrant floral notes of jasmine, crisp bergamot, and a luminous citrus sweetness, this heirloom micro-lot illuminates your morning ritual.
       </p>
 
       <button 
         class="add-to-cart-action add-to-cart-btn"
-        data-id="event-horizon"
-        data-name="Event Horizon"
+        data-id="aurora-protocol"
+        data-name="Aurora Protocol"
         data-price="1100"
-        data-img="../../assits/brazilian_origin.png"
+        data-img="../../assets/images/ethiopian_origin.png"
       >
         <svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor">
           <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
@@ -381,8 +631,8 @@
           <h4 class="footer-col-head">Explore</h4>
           <ul class="footer-list">
             <li><a href="../index.html">Shop All</a></li>
-            <li><a href="../aurora-protocol/index.html">Ethiopian Origin</a></li>
-            <li><a href="index.html">Brazilian Origin</a></li>
+            <li><a href="index.html">Ethiopian Origin</a></li>
+            <li><a href="../event-horizon/index.html">Brazilian Origin</a></li>
             <li><a href="../nebula-drift/index.html">Colombian Origin</a></li>
           </ul>
         </div>
@@ -432,6 +682,6 @@
     </div>
   </aside>
 
-  <script src="../../cart.js"></script>
+  <script src="../../assets/js/cart.js"></script>
 </body>
 </html>

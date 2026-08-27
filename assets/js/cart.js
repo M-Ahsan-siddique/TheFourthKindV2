@@ -6,7 +6,7 @@
 (function () {
   const STORAGE_KEY = 'tfk_cart_items';
 
-  // Determine current directory depth relative to seprate assits root
+  // Determine current directory depth relative to project root
   function getRootPrefix() {
     const currentScript = document.currentScript || document.querySelector('script[src*="cart.js"]');
     const src = currentScript ? currentScript.getAttribute('src') : '';
@@ -159,7 +159,7 @@
     let html = '<div class="cart-items-list">';
     cart.forEach((item) => {
       const fileName = item.fileName || getCleanFileName(item.img);
-      const resolvedImg = `${rootPrefix}assits/${fileName}`;
+      const resolvedImg = `${rootPrefix}assets/images/${fileName}`;
 
       html += `
         <div class="cart-item" data-id="${item.id}">
