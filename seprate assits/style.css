@@ -1,0 +1,1139 @@
+/* ==========================================================================
+   THE FOURTH KIND — STANDALONE HERO, OUR COFFEE & THE ORIGINS
+   100% Pure Modern HTML5 & CSS3, Zero Framer Dependencies
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: 'Kumbh Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   1. HERO FULLSCREEN CONTAINER
+   ========================================================================== */
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   TOP NAVIGATION
+   ========================================================================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 24px 48px;
+  pointer-events: auto;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.brand-title:hover {
+  opacity: 0.8;
+}
+
+.brand-logo {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-item {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.nav-item:hover {
+  opacity: 0.75;
+}
+
+/* Cart Button in Navbar */
+.cart-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.cart-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
+}
+
+.cart-icon {
+  display: block;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  background-color: #ffffff;
+  color: #0a0a0a;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 100px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-badge.bump {
+  animation: badgePop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   STAGE CONTAINER & CELESTIAL HORIZON
+   ========================================================================== */
+.stage-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1200px;
+  max-width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Starfield Canvas */
+#starfield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 2;
+}
+
+/* 1. Center Atmospheric Radial Flare */
+.flare-radial {
+  position: absolute;
+  bottom: 167px;
+  left: calc(50% - 787px / 2);
+  width: 787px;
+  height: 209px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.5), rgba(10, 10, 10, 0));
+  filter: blur(57px);
+  -webkit-filter: blur(57px);
+  overflow: hidden;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* 2. Atmospheric Eclipse Glow */
+.eclipse-atmosphere {
+  position: absolute;
+  bottom: -662px;
+  left: -443px;
+  right: -443px;
+  height: 955px;
+  border-radius: 100%;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(10, 10, 10, 0) 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* 3. Celestial Curved Horizon Rim */
+.horizon-rim {
+  position: absolute;
+  bottom: -668px;
+  left: -521px;
+  right: -521px;
+  height: 955px;
+  aspect-ratio: 2.346820809248555 / 1;
+  border-radius: 100%;
+  background-color: #0a0a0a;
+  box-shadow: inset 0 2px 20px #ffffff, 0 -10px 50px 1px rgba(255, 255, 255, 0.49);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* 4. Left and Right Side Vignette Fades */
+.side-fades {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.fade-left {
+  position: relative;
+  width: 600px;
+  height: 100%;
+  background: linear-gradient(90deg, #0a0a0a 0%, rgba(10, 10, 10, 0) 100%);
+}
+
+.fade-right {
+  position: relative;
+  width: 600px;
+  height: 100%;
+  background: linear-gradient(270deg, #0a0a0a 0%, rgba(10, 10, 10, 0) 100%);
+}
+
+/* ==========================================================================
+   2. OUR COFFEE SECTION (EXACT MATCH TO SCREENSHOT)
+   ========================================================================== */
+/* ==========================================================================
+   2. OUR COFFEE SECTION (MATCHING USER SCREENSHOT)
+   ========================================================================== */
+.our-coffee-section {
+  padding: 120px 56px 100px;
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+.our-coffee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 1320px;
+  margin: 0 auto 48px;
+}
+
+.our-coffee-header .section-title {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.view-all-link {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #888888;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view-all-link:hover {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+/* Minimal Coffee Grid */
+.minimal-coffee-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.coffee-card-minimal {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f0f0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.coffee-card-minimal:hover .card-image-wrap {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 255, 255, 0.03);
+}
+
+.card-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.coffee-card-minimal:hover .card-img {
+  transform: scale(1.05);
+}
+
+/* Floating Bottom-Right Price Tag */
+.price-pill {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 6px 14px;
+  border-top-left-radius: 6px;
+  z-index: 3;
+  box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Quick Add to Bag on Hover */
+.quick-add-btn {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 14px;
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease;
+  z-index: 4;
+}
+
+.coffee-card-minimal:hover .quick-add-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quick-add-btn:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Title Row with extending line */
+.card-title-row {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.card-title-link {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.card-title-link:hover {
+  color: #cccccc;
+}
+
+.card-title-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  margin-left: 18px;
+}
+
+
+/* ==========================================================================
+   3. COFFEE ORIGINS & TERROIRS SECTION
+   ========================================================================== */
+.origins-section {
+  padding: 120px 48px 120px;
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+/* Section Header for Origins (Locked to 1320px column matching cards) */
+.origins-section .section-header {
+  max-width: 1320px;
+  margin: 0 auto 48px;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.origins-section .section-eyebrow {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #888888;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.origins-section .section-title {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.origins-section .section-desc {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 15px;
+  color: #888888;
+  max-width: 650px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.origins-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.origin-card {
+  position: relative;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #ffffff;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.origin-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.origin-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  overflow: hidden;
+  background: #000000;
+}
+
+.origin-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.origin-card:hover .origin-card-img {
+  transform: scale(1.06);
+}
+
+.origin-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%);
+}
+
+.origin-card-body {
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.origin-country {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #888888;
+  margin-bottom: 8px;
+}
+
+.origin-name {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.origin-notes {
+  font-size: 14px;
+  color: #999999;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.origin-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  transition: gap 0.2s ease;
+}
+
+.origin-card:hover .origin-card-cta {
+  gap: 12px;
+}
+
+/* ==========================================================================
+   4. WHITE-THEMED CART DRAWER & OVERLAY (PER USER REQUEST)
+   ========================================================================== */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 99998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -480px;
+  width: 440px;
+  max-width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  border-left: 1px solid #eeeeee;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  color: #000000;
+  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-drawer.open {
+  right: 0;
+}
+
+/* Cart Header */
+.cart-header {
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eeeeee;
+  background-color: #ffffff;
+}
+
+.cart-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-heading {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.cart-items-total {
+  font-size: 14px;
+  color: #888888;
+}
+
+.cart-close-btn {
+  background: none;
+  border: none;
+  color: #666666;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.cart-close-btn:hover {
+  color: #000000;
+  transform: scale(1.15);
+}
+
+/* Cart Body */
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  background-color: #ffffff;
+}
+
+/* Empty State */
+.cart-empty {
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.empty-title {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #000000;
+  margin-top: 8px;
+}
+
+.empty-desc {
+  font-size: 13px;
+  color: #666666;
+  max-width: 240px;
+}
+
+.empty-cta {
+  margin-top: 14px;
+  display: inline-block;
+  padding: 10px 22px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #000000;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.empty-cta:hover {
+  background: #e8e8e8;
+  border-color: #cccccc;
+}
+
+/* Item List */
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.item-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid #eeeeee;
+}
+
+.item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.item-name {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.item-remove {
+  background: none;
+  border: none;
+  color: #999999;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px;
+  transition: color 0.2s ease;
+}
+
+.item-remove:hover {
+  color: #ff3333;
+}
+
+.item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qty-selector {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  color: #000000;
+  padding: 4px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.qty-btn:hover {
+  background: #eeeeee;
+}
+
+.qty-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 8px;
+  color: #000000;
+}
+
+.item-price {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* Cart Footer */
+.cart-footer {
+  padding: 24px 28px;
+  border-top: 1px solid #eeeeee;
+  background: #ffffff;
+}
+
+.cart-subtotal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.subtotal-label {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #000000;
+}
+
+.subtotal-amount {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.cart-shipping-note {
+  font-size: 12px;
+  color: #777777;
+  margin-bottom: 20px;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 16px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #222222;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+.checkout-btn:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   RESPONSIVE SCALING (Mobile & Tablet)
+   ========================================================================== */
+@media (max-width: 1200px) {
+  .stage-container {
+    width: 100vw;
+  }
+
+  .products-grid, .origins-grid {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .our-coffee-section, .origins-section {
+    padding: 80px 28px;
+  }
+
+  .products-grid, .minimal-coffee-grid, .origins-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 20px 18px;
+  }
+
+  .brand-title {
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    gap: 8px;
+  }
+
+  .brand-logo {
+    height: 20px;
+  }
+
+  .nav-menu {
+    gap: 16px;
+  }
+
+  .nav-item {
+    font-size: 14px;
+  }
+
+  .our-coffee-section, .origins-section {
+    padding: 60px 20px;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+
+  .products-grid, .minimal-coffee-grid, .origins-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .cart-drawer {
+    width: 100vw;
+    right: -100vw;
+  }
+}
+
+/* ==========================================================================
+   4. VISION & CRAFT SECTION
+   ========================================================================== */
+.vision-section {
+  padding: 130px 48px;
+  background: radial-gradient(circle at center, #131313 0%, #000000 70%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+.vision-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.vision-quote {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: clamp(24px, 3.5vw, 44px);
+  font-weight: 300;
+  line-height: 1.4;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin-bottom: 32px;
+}
+
+.vision-sub {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 16px;
+  color: #888888;
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ==========================================================================
+   CELESTIAL REVEAL ANIMATIONS (Cool appearing effect on scroll)
+   ========================================================================== */
+
+/* Eyebrow entrance (letter-spacing expansion + fade + unblur) */
+.reveal-eyebrow {
+  opacity: 0;
+  transform: translateY(16px);
+  letter-spacing: 1px;
+  filter: blur(8px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              letter-spacing 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s ease;
+  will-change: opacity, transform, filter, letter-spacing;
+}
+
+.section-header.revealed .reveal-eyebrow,
+.our-coffee-header.revealed .reveal-eyebrow,
+.shop-header.revealed .reveal-eyebrow {
+  opacity: 0.85;
+  transform: translateY(0);
+  letter-spacing: 4px;
+  filter: blur(0);
+}
+
+/* Title Characters entrance (cosmic letter-by-letter unblur & float up) */
+.reveal-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(32px) scale(0.94);
+  filter: blur(14px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.section-header.revealed .reveal-char,
+.our-coffee-header.revealed .reveal-char,
+.shop-header.revealed .reveal-char {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  filter: blur(0) !important;
+}
+
+/* Description entrance (smooth unblur + glide) */
+.reveal-desc {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(10px);
+  transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.35s,
+              transform 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.35s,
+              filter 0.95s ease 0.35s;
+  will-change: opacity, transform, filter;
+}
+
+.section-header.revealed .reveal-desc,
+.our-coffee-header.revealed .reveal-desc,
+.shop-header.revealed .reveal-desc {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  filter: blur(0) !important;
+}
+
+/* Vision Quote Word-by-Word entrance */
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(12px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.8s ease;
+  will-change: opacity, transform, filter;
+}
+
+.vision-container.revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Vision Subtext */
+.reveal-sub {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(8px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s,
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s,
+              filter 1s ease 0.6s;
+  will-change: opacity, transform, filter;
+}
+
+.vision-container.revealed .reveal-sub {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Staggered Cards Reveal */
+.products-grid .product-card.reveal-card,
+.origins-grid .origin-card.reveal-card {
+  opacity: 0;
+  transform: translateY(40px);
+  filter: blur(10px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.9s ease,
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  will-change: opacity, transform, filter;
+}
+
+.products-grid.revealed .product-card.reveal-card,
+.origins-grid.revealed .origin-card.reveal-card {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+

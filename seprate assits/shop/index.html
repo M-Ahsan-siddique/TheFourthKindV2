@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop — The Fourth Kind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: 'Kumbh Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* TOP BAR WITH BACK BUTTON */
+    .top-bar {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 20px 48px 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #666666;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: #000000;
+      transform: translateX(-3px);
+    }
+
+    /* HEADER */
+    header.site-header {
+      width: 100%;
+      border-bottom: 1px solid #eeeeee;
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .brand-logo-img {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+      filter: invert(1);
+      display: block;
+    }
+
+    .brand-logo-text {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #000000;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 15px;
+      font-weight: 400;
+      color: #000000;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-link.active {
+      font-weight: 600;
+    }
+
+    .nav-link:hover {
+      opacity: 0.7;
+    }
+
+    .cart-icon-btn {
+      position: relative;
+      background: none;
+      border: 1px solid #e0e0e0;
+      border-radius: 50%;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .cart-icon-btn:hover {
+      background-color: #f7f7f7;
+      border-color: #cccccc;
+    }
+
+    .cart-icon-btn svg {
+      width: 19px;
+      height: 19px;
+      fill: #000000;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 17px;
+      height: 17px;
+      padding: 0 4px;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 100px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* MAIN CONTAINER */
+    .shop-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 60px 48px 120px;
+    }
+
+    .shop-header {
+      margin-bottom: 48px;
+    }
+
+    .shop-title {
+      font-size: 38px;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #000000;
+      margin-bottom: 12px;
+    }
+
+    .shop-subtitle {
+      font-size: 16px;
+      font-weight: 300;
+      color: #666666;
+    }
+
+    /* PRODUCTS GRID */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+    }
+
+    .product-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: #f8f8f8;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e8e8e8;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .card-media:hover {
+      border-color: #cccccc;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .media-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-media:hover .product-image {
+      transform: scale(1.04);
+    }
+
+    .price-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 4px;
+      z-index: 2;
+    }
+
+    .add-to-cart-btn {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      background: rgba(0, 0, 0, 0.88);
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      color: #ffffff;
+      font-family: 'Kumbh Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background-color 0.25s, transform 0.2s;
+      z-index: 3;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #000000;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-info {
+      margin-top: 20px;
+    }
+
+    .product-meta {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888888;
+      margin-bottom: 6px;
+    }
+
+    .product-name a {
+      font-size: 18px;
+      font-weight: 400;
+      color: #000000;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .product-name a:hover {
+      opacity: 0.7;
+    }
+
+    .product-line {
+      margin-top: 12px;
+      height: 1px;
+      width: 100%;
+      background: #eeeeee;
+      transition: background 0.3s;
+    }
+
+    .product-card:hover .product-line {
+      background: #000000;
+    }
+
+    /* Cart styles moved to cart.css */
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .top-bar, .header-inner, .shop-container {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .cart-drawer {
+        width: 100vw;
+        right: -100vw;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../cart.css" />
+  <link rel="stylesheet" href="../footer.css" />
+  <link rel="stylesheet" href="../reveal.css" />
+</head>
+<body>
+
+  <!-- BACK TO MAIN PAGE BUTTON -->
+  <div class="top-bar">
+    <a href="../index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor">
+        <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/>
+      </svg>
+      <span>Back to Home</span>
+    </a>
+  </div>
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="header-brand">
+        <img src="../logo.png" alt="The Fourth Kind Logo" class="brand-logo-img" />
+        <span class="brand-logo-text">THE FOURTH KIND</span>
+      </a>
+
+      <div class="header-right">
+        <a href="index.html" class="nav-link active">Shop</a>
+        <a href="../contact/index.html" class="nav-link">Contact</a>
+        <button id="cart-toggle-btn" class="cart-icon-btn" aria-label="Open Shopping Cart">
+          <svg viewBox="0 0 256 256">
+            <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM96,88a32,32,0,0,0,64,0,8,8,0,0,0-16,0,16,16,0,0,1-32,0,8,8,0,0,0-16,0Z"/>
+          </svg>
+          <span id="cart-count-badge" class="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SHOP MAIN CONTENT -->
+  <main class="shop-container">
+    <div class="shop-header">
+      <h1 class="shop-title">OUR COFFEE</h1>
+      <p class="shop-subtitle">Extra-terrestrial craft roasts sourced from high-altitude micro-lots.</p>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- Product 1: Aurora Protocol -->
+      <article class="product-card">
+        <div class="card-media">
+          <a href="aurora-protocol/index.html" class="media-link">
+            <img 
+              src="../assits/ethiopian_origin.png" 
+              alt="Aurora Protocol Coffee" 
+              class="product-image"
+            />
+          </a>
+          <span class="price-badge">$1.1K</span>
+          <button 
+            class="add-to-cart-btn"
+            data-id="aurora-protocol"
+            data-name="Aurora Protocol"
+            data-price="1100"
+            data-img="../assits/ethiopian_origin.png"
+          >
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+            </svg>
+            <span>ADD TO CART</span>
+          </button>
+        </div>
+        <div class="card-info">
+          <div class="product-meta">Ethiopian Heirloom</div>
+          <h2 class="product-name">
+            <a href="aurora-protocol/index.html">Aurora Protocol</a>
+          </h2>
+          <div class="product-line"></div>
+        </div>
+      </article>
+
+      <!-- Product 2: Event Horizon -->
+      <article class="product-card">
+        <div class="card-media">
+          <a href="event-horizon/index.html" class="media-link">
+            <img 
+              src="../assits/brazilian_origin.png" 
+              alt="Event Horizon Coffee" 
+              class="product-image"
+            />
+          </a>
+          <span class="price-badge">$1.1K</span>
+          <button 
+            class="add-to-cart-btn"
+            data-id="event-horizon"
+            data-name="Event Horizon"
+            data-price="1100"
+            data-img="../assits/brazilian_origin.png"
+          >
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+            </svg>
+            <span>ADD TO CART</span>
+          </button>
+        </div>
+        <div class="card-info">
+          <div class="product-meta">Brazilian Micro-Lot</div>
+          <h2 class="product-name">
+            <a href="event-horizon/index.html">Event Horizon</a>
+          </h2>
+          <div class="product-line"></div>
+        </div>
+      </article>
+
+      <!-- Product 3: Nebula Drift -->
+      <article class="product-card">
+        <div class="card-media">
+          <a href="nebula-drift/index.html" class="media-link">
+            <img 
+              src="../assits/colombian_origin.png" 
+              alt="Nebula Drift Coffee" 
+              class="product-image"
+            />
+          </a>
+          <span class="price-badge">$850</span>
+          <button 
+            class="add-to-cart-btn"
+            data-id="nebula-drift"
+            data-name="Nebula Drift"
+            data-price="850"
+            data-img="../assits/colombian_origin.png"
+          >
+            <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+            </svg>
+            <span>ADD TO CART</span>
+          </button>
+        </div>
+        <div class="card-info">
+          <div class="product-meta">Colombian Reserve</div>
+          <h2 class="product-name">
+            <a href="nebula-drift/index.html">Nebula Drift</a>
+          </h2>
+          <div class="product-line"></div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- CART DRAWER & OVERLAY -->
+  
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <a href="../index.html" class="footer-logo">THE FOURTH KIND</a>
+        <p class="footer-tag">Specialty single-origin coffees crafted with celestial precision and ancient botanical wisdom.</p>
+      </div>
+
+      <div class="footer-links">
+        <div>
+          <h4 class="footer-col-head">Explore</h4>
+          <ul class="footer-list">
+            <li><a href="index.html">Shop All</a></li>
+            <li><a href="aurora-protocol/index.html">Ethiopian Origin</a></li>
+            <li><a href="event-horizon/index.html">Brazilian Origin</a></li>
+            <li><a href="nebula-drift/index.html">Colombian Origin</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-head">Legal</h4>
+          <ul class="footer-list">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Delivery & Returns</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-head">Follow</h4>
+          <ul class="footer-list">
+            <li><a href="https://x.com" target="_blank" rel="noopener">Twitter / X</a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 The Fourth Kind. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <div id="cart-overlay" class="cart-overlay"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-hidden="true">
+    <div class="cart-header">
+      <div class="cart-header-title">
+        <span>YOUR CART</span>
+        <span id="cart-items-total" class="cart-items-total">(0)</span>
+      </div>
+      <button id="cart-close-btn" class="cart-close-btn" aria-label="Close Cart">✕</button>
+    </div>
+    <div id="cart-body" class="cart-body"></div>
+    <div class="cart-footer">
+      <div class="cart-subtotal-row">
+        <span class="subtotal-label">SUBTOTAL</span>
+        <span id="cart-subtotal-amount" class="subtotal-amount">$0</span>
+      </div>
+      <p class="cart-shipping-note">Taxes and shipping calculated at checkout.</p>
+      <button id="checkout-btn" class="checkout-btn">PROCEED TO CHECKOUT</button>
+    </div>
+  </aside>
+
+  <script src="../cart.js"></script>
+  <script src="../reveal.js"></script>
+</body>
+</html>
