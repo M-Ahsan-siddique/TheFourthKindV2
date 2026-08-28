@@ -1,0 +1,542 @@
+/* ==========================================================================
+   THE FOURTH KIND — COFFEE ORIGINS CARD STACKING SCROLL
+   Sticky Overlap Architecture with Dynamic Theme Adaptation
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Kumbh Sans', 'Inter', -apple-system, sans-serif;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   SITE HEADER / NAVBAR (STICKY OVERLAY & DYNAMIC THEME)
+   ========================================================================== */
+.site-header-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  background: transparent;
+  transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              backdrop-filter 0.35s, 
+              border-color 0.35s, 
+              box-shadow 0.35s;
+}
+
+.site-header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  width: 100%;
+  background: transparent;
+}
+
+.header-content-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 48px;
+  box-sizing: border-box;
+}
+
+.header-logo-link {
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: opacity 0.2s ease;
+}
+
+.header-logo-link:hover {
+  opacity: 0.8;
+}
+
+.header-logo-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+  transition: filter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-logo-text {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-menu-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-menu-link {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s, opacity 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.header-menu-link:hover {
+  opacity: 0.7;
+}
+
+.header-cart-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.header-cart-btn {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.header-cart-btn svg {
+  width: 19px;
+  height: 19px;
+  fill: currentColor;
+  display: block;
+}
+
+/* Dynamic State: Over White Card (Story & Newsletter) */
+.site-header-container.navbar-on-white {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04) !important;
+}
+
+.site-header-container.navbar-on-white .header-logo-icon {
+  filter: invert(1) !important;
+}
+
+.site-header-container.navbar-on-white .header-logo-text,
+.site-header-container.navbar-on-white .header-menu-link,
+.site-header-container.navbar-on-white .header-cart-btn {
+  color: #000000 !important;
+}
+
+.site-header-container.navbar-on-white .cart-badge {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Dynamic State: Over Dark Footer */
+.site-header-container.navbar-on-footer {
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.site-header-container.navbar-on-footer .header-logo-icon {
+  filter: none !important;
+}
+
+.site-header-container.navbar-on-footer .header-logo-text,
+.site-header-container.navbar-on-footer .header-menu-link,
+.site-header-container.navbar-on-footer .header-cart-btn {
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   STICKY STACKING CARDS WRAPPER
+   ========================================================================== */
+.stacking-container {
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   CARD 1: HERO SECTION
+   ========================================================================== */
+.stack-card.card-hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+  background: #000000;
+}
+
+.hero-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.15);
+  animation: heroImageZoomOut 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+}
+
+@keyframes heroImageZoomOut {
+  0% {
+    transform: scale(1.2);
+    filter: blur(4px);
+  }
+  100% {
+    transform: scale(1.0);
+    filter: blur(0px);
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 24px;
+  animation: heroTextReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes heroTextReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+.hero-title {
+  font-size: clamp(38px, 7.5vw, 84px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: clamp(4px, 1.2vw, 12px);
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  margin: 0;
+}
+
+.hero-title span {
+  display: block;
+}
+
+/* ==========================================================================
+   CARD 2: JOURNEY / STORY SECTION (STICKY OVERLAP OVER CARD 1)
+   ========================================================================== */
+.stack-card.card-story {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  background: #ffffff;
+  color: #000000;
+  z-index: 2;
+  box-shadow: 0 -25px 60px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 48px;
+  box-sizing: border-box;
+}
+
+.story-container {
+  max-width: 1000px;
+  width: 100%;
+  border: 1px solid #e6e6e6;
+  background: #ffffff;
+  padding: 64px 56px;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+}
+
+/* Framing Corner Marks */
+.story-container::before, 
+.story-container::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: #000000;
+  border-style: solid;
+}
+
+.story-container::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.story-container::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.story-content {
+  font-size: clamp(16px, 1.8vw, 21px);
+  font-weight: 300;
+  line-height: 1.7;
+  color: #000000;
+  letter-spacing: 0.2px;
+}
+
+.story-lead {
+  font-weight: 600;
+  color: #000000;
+  margin-right: 8px;
+}
+
+.story-cta-row {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.story-product-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #000000;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 14px 28px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.story-product-btn:hover {
+  background: #222222;
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   CARD 3: FOOTER SECTION (STICKY OVERLAP OVER STORY)
+   ========================================================================== */
+.stack-card.card-footer {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  background: #000000;
+  color: #ffffff;
+  z-index: 3;
+  box-shadow: 0 -25px 60px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 64px 40px;
+  box-sizing: border-box;
+}
+
+.footer-inner-wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.footer-top-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 2fr;
+  gap: 72px;
+  width: 100%;
+  align-items: start;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-logo-title {
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer-logo-title:hover {
+  opacity: 0.8;
+}
+
+.footer-brand-desc {
+  color: #888888;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 360px;
+  font-weight: 300;
+}
+
+.footer-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.footer-col-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #777777;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.footer-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-nav-list a {
+  color: #d1d1d1;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+
+.footer-nav-list a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom-bar {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #666666;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 860px) {
+  .header-content-inner {
+    padding: 0 24px;
+  }
+
+  .stack-card.card-story {
+    padding: 80px 24px 40px;
+  }
+
+  .story-container {
+    padding: 36px 28px;
+  }
+
+  .footer-inner-wrap {
+    gap: 36px;
+  }
+
+  .footer-top-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .footer-links-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .story-container {
+    padding: 28px 20px;
+  }
+
+  .footer-links-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .stack-card.card-footer {
+    padding: 70px 24px 30px;
+  }
+
+  .header-logo-text {
+    font-size: 14px;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
