@@ -218,6 +218,14 @@
     });
   }
 
+  // Shopify Checkout Integration
+  const SHOPIFY_STORE_DOMAIN = 'ckkhbb-zm.myshopify.com';
+  const SHOPIFY_VARIANTS = {
+    'aurora-protocol': '46540339052623',
+    'event-horizon': '46540339052623',
+    'nebula-drift': '46540339052623'
+  };
+
   // Add to Cart buttons
   document.querySelectorAll('.add-to-cart-btn, .btn-add-cart, .add-to-cart-action').forEach((btn) => {
     btn.addEventListener('click', (e) => {
@@ -226,7 +234,8 @@
         id: btn.getAttribute('data-id'),
         name: btn.getAttribute('data-name'),
         price: btn.getAttribute('data-price'),
-        img: btn.getAttribute('data-img')
+        img: btn.getAttribute('data-img'),
+        variantId: btn.getAttribute('data-variant') || SHOPIFY_VARIANTS[btn.getAttribute('data-id')] || '46540339052623'
       };
       addToCart(product);
     });
@@ -235,12 +244,23 @@
   // Checkout Button
   const checkoutBtn = document.getElementById('checkout-btn');
   if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', () => {
+    checkoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
       if (cart.length === 0) {
         alert('Your cart is empty. Please add coffee before checking out.');
         return;
       }
-      alert(`Proceeding to checkout with ${cart.length} item(s)!`);
+
+      // Build Shopify Cart Permalink: /cart/{variant_id}:{qty},...
+      const cartItems = cart
+        .map((item) => {
+          const vId = item.variantId || SHOPIFY_VARIANTS[item.id] || '46540339052623';
+          return `${vId}:${item.qty}`;
+        })
+        .join(',');
+
+      const checkoutUrl = `https://${SHOPIFY_STORE_DOMAIN}/cart/${cartItems}`;
+      window.location.href = checkoutUrl;
     });
   }
 
