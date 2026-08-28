@@ -59,9 +59,13 @@
     document.body.style.overflow = '';
   }
 
-  // Extract clean filename: e.g. "brazilian_origin.png"
+  // Extract clean relative image path
   function getCleanFileName(path) {
-    if (!path) return 'brazilian_origin.png';
+    if (!path) return 'brazilian-bottle-image-listing 1.png';
+    const idx = path.indexOf('assets/images/');
+    if (idx !== -1) {
+      return path.substring(idx + 'assets/images/'.length);
+    }
     const parts = path.split('/');
     return parts[parts.length - 1];
   }
@@ -73,7 +77,6 @@
 
     if (existing) {
       existing.qty += 1;
-      if (!existing.fileName) existing.fileName = fileName;
     } else {
       cart.push({
         id: product.id,
@@ -118,7 +121,8 @@
 
   // Currency Formatter
   function formatMoney(amount) {
-    return '$' + amount.toLocaleString('en-US');
+    const num = Number(amount) || 0;
+    return 'Rs ' + (num % 1 === 0 ? num : num.toFixed(1));
   }
 
   // Render UI
