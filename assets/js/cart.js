@@ -218,14 +218,6 @@
     });
   }
 
-  // Shopify Checkout Integration
-  const SHOPIFY_STORE_DOMAIN = 'ckkhbb-zm.myshopify.com';
-  const SHOPIFY_VARIANTS = {
-    'aurora-protocol': '46540339052623',
-    'event-horizon': '46540339052623',
-    'nebula-drift': '46540339052623'
-  };
-
   // Add to Cart buttons
   document.querySelectorAll('.add-to-cart-btn, .btn-add-cart, .add-to-cart-action').forEach((btn) => {
     btn.addEventListener('click', (e) => {
@@ -234,8 +226,7 @@
         id: btn.getAttribute('data-id'),
         name: btn.getAttribute('data-name'),
         price: btn.getAttribute('data-price'),
-        img: btn.getAttribute('data-img'),
-        variantId: btn.getAttribute('data-variant') || SHOPIFY_VARIANTS[btn.getAttribute('data-id')] || '46540339052623'
+        img: btn.getAttribute('data-img')
       };
       addToCart(product);
     });
