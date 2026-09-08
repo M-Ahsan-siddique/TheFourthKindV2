@@ -1,6 +1,6 @@
 /**
  * THE FOURTH KIND — STANDALONE CHECKOUT CONTROLLER
- * Dynamic Cart Retrieval, IBFT Bank Details, Payment Proof Upload, Order Verification & WhatsApp Integration
+ * Dynamic Cart Retrieval, IBFT Bank Details, Payment Proof Upload, Order Verification & Free WhatsApp Attachment / Web Share Integration
  */
 
 (function () {
@@ -18,7 +18,11 @@
 
   let selectedShippingPrice = 250;
   let appliedDiscount = 0;
+  let rawProofFile = null; // Raw File object
   let proofFileData = null;
+
+  // Active Order state for WhatsApp submission
+  let currentOrderData = null;
 
   // DOM Elements
   const summaryItemsList = document.getElementById('summary-items-list');
@@ -43,6 +47,7 @@
   // Modal Elements
   const orderModalOverlay = document.getElementById('order-modal-overlay');
   const modalOrderId = document.getElementById('modal-order-id');
+  const modalTipBanner = document.getElementById('modal-tip-banner');
   const btnWhatsappAction = document.getElementById('btn-whatsapp-action');
 
   // Format Money
@@ -85,9 +90,9 @@
 
     if (cart.length === 0) {
       summaryItemsList.innerHTML = `
-        <div style="text-align: center; padding: 24px 0; color: #777;">
-          <p style="font-weight: 600; margin-bottom: 8px;">Your cart is empty.</p>
-          <a href="../shop/index.html" style="font-size: 13px; color: #000; text-decoration: underline;">Return to Shop</a>
+        <div style="text-align: center; padding: 24px 0; color: #888;">
+          <p style="font-weight: 600; font-size: 13.5px; margin-bottom: 8px; color: #111;">Your cart is empty.</p>
+          <a href="../shop/index.html" style="font-size: 12.5px; color: #000; text-decoration: underline; font-weight: 600;">Explore Specialty Coffees &rarr;</a>
         </div>
       `;
       if (btnCompleteOrder) btnCompleteOrder.disabled = true;
@@ -102,16 +107,16 @@
       const imgPath = `../assets/images/${fileName}`;
 
       html += `
-        <div class="summary-item-row">
-          <div class="summary-item-img-wrap">
+        <div class="summary-item-card">
+          <div class="summary-thumb-box">
             <img src="${imgPath}" alt="${item.name}" onerror="this.src='../assets/images/FourthKind/ethopian-bottle-image-listing 2.png'" />
-            <span class="summary-item-qty-badge">${item.qty}</span>
+            <span class="summary-qty-bubble">${item.qty}</span>
           </div>
-          <div class="summary-item-details">
-            <h4 class="summary-item-name">${item.name}</h4>
-            <span class="summary-item-sub">${formatMoney(item.price)} each</span>
+          <div class="summary-info">
+            <h4 class="summary-item-title">${item.name}</h4>
+            <span class="summary-item-price-each">${formatMoney(item.price)} each</span>
           </div>
-          <span class="summary-item-total">${formatMoney(item.price * item.qty)}</span>
+          <span class="summary-line-total">${formatMoney(item.price * item.qty)}</span>
         </div>
       `;
     });
@@ -131,17 +136,17 @@
     });
   });
 
-  // Payment Method Accordion Selection
+  // Payment Method Box Selection
   document.querySelectorAll('input[name="payment_method"]').forEach((radio) => {
     radio.addEventListener('change', (e) => {
-      document.querySelectorAll('.payment-method-item').forEach((item) => item.classList.remove('active'));
-      const parentItem = e.target.closest('.payment-method-item');
-      if (parentItem) parentItem.classList.add('active');
+      document.querySelectorAll('.payment-method-box, .payment-method-item').forEach((box) => box.classList.remove('active'));
+      const parentBox = e.target.closest('.payment-method-box, .payment-method-item');
+      if (parentBox) parentBox.classList.add('active');
     });
   });
 
   // Copy to Clipboard buttons for Bank Details
-  document.querySelectorAll('.btn-copy').forEach((btn) => {
+  document.querySelectorAll('.btn-mini-copy, .btn-copy').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const textToCopy = btn.getAttribute('data-copy');
@@ -151,10 +156,12 @@
           btn.textContent = 'Copied!';
           btn.style.backgroundColor = '#10b981';
           btn.style.color = '#ffffff';
+          btn.style.borderColor = '#10b981';
           setTimeout(() => {
             btn.textContent = originalText;
             btn.style.backgroundColor = '';
             btn.style.color = '';
+            btn.style.borderColor = '';
           }, 2000);
         });
       }
@@ -190,7 +197,7 @@
     if (!file) return;
 
     if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
-      alert('Please upload a valid image (PNG, JPG, JPEG) or PDF receipt.');
+      alert('Please upload a valid image (PNG, JPG, JPEG, WebP) or PDF receipt.');
       return;
     }
 
@@ -198,6 +205,8 @@
       alert('File size exceeds 10MB limit. Please upload a smaller file.');
       return;
     }
+
+    rawProofFile = file;
 
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -259,6 +268,7 @@
   if (btnRemoveProof) {
     btnRemoveProof.addEventListener('click', (e) => {
       e.preventDefault();
+      rawProofFile = null;
       proofFileData = null;
       if (proofFileInput) proofFileInput.value = '';
       if (proofPreviewCard) proofPreviewCard.classList.remove('show');
@@ -296,7 +306,7 @@
       }
 
       if (!termsAgreed) {
-        alert('Please agree to the Terms & Conditions and Warranty Policy.');
+        alert('Please agree to the Terms & Conditions and Policies.');
         return;
       }
 
@@ -307,40 +317,58 @@
       const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
       const grandTotal = Math.max(0, subtotal + selectedShippingPrice - appliedDiscount);
 
-      // Create pre-filled WhatsApp Message
+      // Clean ASCII / Standard WhatsApp formatting (Universal compatibility)
       let itemsSummary = '';
       cart.forEach((item) => {
-        itemsSummary += `• ${item.qty}x ${item.name} (Rs ${item.price * item.qty})\n`;
+        itemsSummary += `* ${item.qty}x ${item.name} (Rs ${item.price * item.qty})\n`;
       });
 
       const whatsappMessage = 
-`🛸 *NEW ORDER — THE FOURTH KIND*
-━━━━━━━━━━━━━━━━━━━━
-📦 *Order ID:* #${orderId}
-👤 *Name:* ${fullName}
-📱 *Customer WhatsApp:* ${whatsapp}
-📧 *Email:* ${email || 'N/A'}
-📍 *Address:* ${address}, ${city}, ${province}
+`*NEW ORDER — THE FOURTH KIND*
+--------------------------------
+*Order ID:* #${orderId}
+*Customer:* ${fullName}
+*WhatsApp:* ${whatsapp}
+*Email:* ${email || 'N/A'}
+*Delivery Address:* ${address}, ${city}, ${province}
 
-🛒 *Ordered Items:*
+*Ordered Items:*
 ${itemsSummary}
-💵 *Subtotal:* Rs ${subtotal.toLocaleString()}
-🚚 *Shipping:* Rs ${selectedShippingPrice}
-${appliedDiscount > 0 ? `🎟️ *Discount:* -Rs ${appliedDiscount}\n` : ''}💰 *Total Amount:* Rs ${grandTotal.toLocaleString()}
+*Subtotal:* Rs ${subtotal.toLocaleString()}
+*Shipping:* Rs ${selectedShippingPrice}
+${appliedDiscount > 0 ? `*Discount:* -Rs ${appliedDiscount}\n` : ''}*Total Amount:* Rs ${grandTotal.toLocaleString()}
 
-💳 *Payment Method:* ${paymentMethod.toUpperCase()}
-${proofFileData ? '🧾 *Payment Proof:* Attached / Uploaded' : '⚠️ *Payment Proof:* Sending screenshot now'}
-${notes ? `📝 *Notes:* ${notes}\n` : ''}━━━━━━━━━━━━━━━━━━━━
-Please confirm my order and share shipping updates.`;
+*Payment Method:* ${paymentMethod.toUpperCase()}
+*Payment Proof:* ${rawProofFile ? 'Attached screenshot' : 'Sending receipt below'}
+${notes ? `*Notes:* ${notes}\n` : ''}--------------------------------
+Please confirm my order and share roasting & shipping updates.`;
 
       const encodedMessage = encodeURIComponent(whatsappMessage);
       const whatsappUrl = `https://wa.me/${STORE_WHATSAPP}?text=${encodedMessage}`;
 
+      // Save active order context
+      currentOrderData = {
+        orderId: orderId,
+        whatsappMessage: whatsappMessage,
+        whatsappUrl: whatsappUrl
+      };
+
       // Set Modal Content
       if (modalOrderId) modalOrderId.textContent = `Order #${orderId}`;
-      if (btnWhatsappAction) {
-        btnWhatsappAction.href = whatsappUrl;
-        btnWhatsappAction.target = '_blank';
+
+      // Setup Tip Banner
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (modalTipBanner) {
+        if (rawProofFile) {
+          modalTipBanner.style.display = 'flex';
+          if (isMobile && navigator.canShare) {
+            modalTipBanner.innerHTML = `<span>📱 <strong>1-Tap Share:</strong> Tap the button below to share your order details and payment screenshot together via WhatsApp.</span>`;
+          } else {
+            modalTipBanner.innerHTML = `<span>📋 <strong>Auto-Copy Enabled:</strong> We've prepared your screenshot! Press <strong>Ctrl + V</strong> (Paste) in WhatsApp chat to attach your receipt.</span>`;
+          }
+        } else {
+          modalTipBanner.style.display = 'none';
+        }
       }
 
       // Show Modal
@@ -352,6 +380,46 @@ Please confirm my order and share shipping updates.`;
       try {
         localStorage.removeItem(STORAGE_KEY);
       } catch (err) {}
+    });
+  }
+
+  // Handle WhatsApp Click with Free File Share / Clipboard Copy
+  if (btnWhatsappAction) {
+    btnWhatsappAction.addEventListener('click', async (e) => {
+      e.preventDefault();
+
+      if (!currentOrderData) return;
+
+      // 1. Mobile Web Share API: Try attaching the actual image file natively
+      if (rawProofFile && navigator.canShare) {
+        try {
+          const shareData = {
+            files: [rawProofFile],
+            title: `The Fourth Kind - Order #${currentOrderData.orderId}`,
+            text: currentOrderData.whatsappMessage
+          };
+
+          if (navigator.canShare(shareData)) {
+            await navigator.share(shareData);
+            return;
+          }
+        } catch (shareErr) {
+          console.log('Native share canceled or fell through:', shareErr);
+        }
+      }
+
+      // 2. Desktop / Fallback: Copy image to clipboard so user can press Ctrl+V
+      if (rawProofFile && rawProofFile.type.startsWith('image/') && navigator.clipboard && window.ClipboardItem) {
+        try {
+          const clipboardItem = new ClipboardItem({ [rawProofFile.type]: rawProofFile });
+          await navigator.clipboard.write([clipboardItem]);
+        } catch (clipErr) {
+          console.log('Clipboard write skipped:', clipErr);
+        }
+      }
+
+      // 3. Open WhatsApp Web / App
+      window.open(currentOrderData.whatsappUrl, '_blank');
     });
   }
 
