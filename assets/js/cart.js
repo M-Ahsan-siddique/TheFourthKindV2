@@ -251,16 +251,8 @@
         return;
       }
 
-      // Build Shopify Cart Permalink: /cart/{variant_id}:{qty},...
-      const cartItems = cart
-        .map((item) => {
-          const vId = item.variantId || SHOPIFY_VARIANTS[item.id] || '46540339052623';
-          return `${vId}:${item.qty}`;
-        })
-        .join(',');
-
-      const checkoutUrl = `https://${SHOPIFY_STORE_DOMAIN}/cart/${cartItems}`;
-      window.location.href = checkoutUrl;
+      const rootPrefix = getRootPrefix();
+      window.location.href = `${rootPrefix}checkout/index.html`;
     });
   }
 
