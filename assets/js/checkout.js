@@ -47,7 +47,6 @@
   // Modal Elements
   const orderModalOverlay = document.getElementById('order-modal-overlay');
   const modalOrderId = document.getElementById('modal-order-id');
-  const modalTipBanner = document.getElementById('modal-tip-banner');
   const btnWhatsappAction = document.getElementById('btn-whatsapp-action');
 
   // Format Money
@@ -356,21 +355,6 @@ Please confirm my order and share roasting & shipping updates.`;
       // Set Modal Content
       if (modalOrderId) modalOrderId.textContent = `Order #${orderId}`;
 
-      // Setup Tip Banner
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if (modalTipBanner) {
-        if (rawProofFile) {
-          modalTipBanner.style.display = 'flex';
-          if (isMobile && navigator.canShare) {
-            modalTipBanner.innerHTML = `<span>📱 <strong>1-Tap Share:</strong> Tap the button below to share your order details and payment screenshot together via WhatsApp.</span>`;
-          } else {
-            modalTipBanner.innerHTML = `<span>📋 <strong>Auto-Copy Enabled:</strong> We've prepared your screenshot! Press <strong>Ctrl + V</strong> (Paste) in WhatsApp chat to attach your receipt.</span>`;
-          }
-        } else {
-          modalTipBanner.style.display = 'none';
-        }
-      }
-
       // Show Modal
       if (orderModalOverlay) {
         orderModalOverlay.classList.add('open');
@@ -383,14 +367,14 @@ Please confirm my order and share roasting & shipping updates.`;
     });
   }
 
-  // Handle WhatsApp Click with Free File Share / Clipboard Copy
+  // Handle WhatsApp Click
   if (btnWhatsappAction) {
     btnWhatsappAction.addEventListener('click', async (e) => {
       e.preventDefault();
 
       if (!currentOrderData) return;
 
-      // 1. Mobile Web Share API: Try attaching the actual image file natively
+      // Mobile Web Share API: If supported on device, share image file & text together
       if (rawProofFile && navigator.canShare) {
         try {
           const shareData = {
@@ -408,17 +392,7 @@ Please confirm my order and share roasting & shipping updates.`;
         }
       }
 
-      // 2. Desktop / Fallback: Copy image to clipboard so user can press Ctrl+V
-      if (rawProofFile && rawProofFile.type.startsWith('image/') && navigator.clipboard && window.ClipboardItem) {
-        try {
-          const clipboardItem = new ClipboardItem({ [rawProofFile.type]: rawProofFile });
-          await navigator.clipboard.write([clipboardItem]);
-        } catch (clipErr) {
-          console.log('Clipboard write skipped:', clipErr);
-        }
-      }
-
-      // 3. Open WhatsApp Web / App
+      // Direct WhatsApp redirect
       window.open(currentOrderData.whatsappUrl, '_blank');
     });
   }
