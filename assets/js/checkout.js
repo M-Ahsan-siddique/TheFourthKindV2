@@ -18,11 +18,7 @@
 
   let selectedShippingPrice = 250;
   let appliedDiscount = 0;
-  let rawProofFile = null; // Raw File object
   let proofFileData = null;
-
-  // Active Order state for WhatsApp submission
-  let currentOrderData = null;
 
   // DOM Elements
   const summaryItemsList = document.getElementById('summary-items-list');
@@ -342,18 +338,11 @@ ${appliedDiscount > 0 ? `*Discount:* -Rs ${appliedDiscount}\n` : ''}*Total Amoun
 ${notes ? `*Notes:* ${notes}\n` : ''}--------------------------------
 Please confirm my order and share roasting & shipping updates.`;
 
-      const encodedMessage = encodeURIComponent(whatsappMessage);
-      const whatsappUrl = `https://wa.me/${STORE_WHATSAPP}?text=${encodedMessage}`;
-
-      // Save active order context
-      currentOrderData = {
-        orderId: orderId,
-        whatsappMessage: whatsappMessage,
-        whatsappUrl: whatsappUrl
-      };
-
-      // Set Modal Content
+      // Set Modal Content & WhatsApp URL
       if (modalOrderId) modalOrderId.textContent = `Order #${orderId}`;
+      if (btnWhatsappAction) {
+        btnWhatsappAction.href = whatsappUrl;
+      }
 
       // Show Modal
       if (orderModalOverlay) {
@@ -364,36 +353,6 @@ Please confirm my order and share roasting & shipping updates.`;
       try {
         localStorage.removeItem(STORAGE_KEY);
       } catch (err) {}
-    });
-  }
-
-  // Handle WhatsApp Click
-  if (btnWhatsappAction) {
-    btnWhatsappAction.addEventListener('click', async (e) => {
-      e.preventDefault();
-
-      if (!currentOrderData) return;
-
-      // Mobile Web Share API: If supported on device, share image file & text together
-      if (rawProofFile && navigator.canShare) {
-        try {
-          const shareData = {
-            files: [rawProofFile],
-            title: `The Fourth Kind - Order #${currentOrderData.orderId}`,
-            text: currentOrderData.whatsappMessage
-          };
-
-          if (navigator.canShare(shareData)) {
-            await navigator.share(shareData);
-            return;
-          }
-        } catch (shareErr) {
-          console.log('Native share canceled or fell through:', shareErr);
-        }
-      }
-
-      // Direct WhatsApp redirect
-      window.open(currentOrderData.whatsappUrl, '_blank');
     });
   }
 
