@@ -334,9 +334,12 @@ ${itemsSummary}
 ${appliedDiscount > 0 ? `*Discount:* -Rs ${appliedDiscount}\n` : ''}*Total Amount:* Rs ${grandTotal.toLocaleString()}
 
 *Payment Method:* ${paymentMethod.toUpperCase()}
-*Payment Proof:* ${rawProofFile ? 'Attached screenshot' : 'Sending receipt below'}
+*Payment Proof:* ${proofFileData ? 'Attached screenshot' : 'Sending receipt below'}
 ${notes ? `*Notes:* ${notes}\n` : ''}--------------------------------
 Please confirm my order and share roasting & shipping updates.`;
+
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      const whatsappUrl = `https://wa.me/${STORE_WHATSAPP}?text=${encodedMessage}`;
 
       // Set Modal Content & WhatsApp URL
       if (modalOrderId) modalOrderId.textContent = `Order #${orderId}`;
