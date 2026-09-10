@@ -222,6 +222,7 @@
   document.querySelectorAll('.add-to-cart-btn, .btn-add-cart, .add-to-cart-action').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const product = {
         id: btn.getAttribute('data-id'),
         name: btn.getAttribute('data-name'),

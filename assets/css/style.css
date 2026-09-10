@@ -379,7 +379,7 @@ html, body {
   box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Quick Add to Bag on Hover */
+/* Quick Add to Bag on Hover (Desktop) and Always Visible (Mobile / Touch) */
 .quick-add-btn {
   position: absolute;
   bottom: 14px;
@@ -402,7 +402,7 @@ html, body {
   cursor: pointer;
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   z-index: 4;
 }
 
@@ -414,6 +414,32 @@ html, body {
 .quick-add-btn:hover {
   background: #ffffff;
   color: #000000;
+}
+
+.quick-add-btn:active {
+  background: #ffffff;
+  color: #000000;
+  transform: scale(0.96);
+}
+
+/* Touchscreens and Mobile/Tablet Viewports: Always show Add to Bag button */
+@media (hover: none), (max-width: 1024px) {
+  .quick-add-btn {
+    opacity: 1;
+    transform: translateY(0);
+    background: rgba(0, 0, 0, 0.86);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  }
+}
+
+@media (max-width: 640px) {
+  .quick-add-btn {
+    bottom: 10px;
+    left: 10px;
+    padding: 7px 12px;
+    font-size: 10.5px;
+  }
 }
 
 /* Title Row with extending line */
