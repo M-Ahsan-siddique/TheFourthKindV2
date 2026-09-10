@@ -122,7 +122,7 @@
   // Currency Formatter
   function formatMoney(amount) {
     const num = Number(amount) || 0;
-    return 'Rs ' + (num % 1 === 0 ? num : num.toFixed(1));
+    return 'Rs ' + (num % 1 === 0 ? num.toLocaleString() : num.toFixed(1));
   }
 
   // Render UI

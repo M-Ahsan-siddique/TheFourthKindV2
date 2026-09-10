@@ -517,6 +517,33 @@ html, body {
 }
 
 @media (max-width: 600px) {
+  .header-content-inner {
+    padding: 0 18px;
+  }
+
+  .header-logo-link {
+    gap: 8px;
+  }
+
+  .header-logo-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .header-logo-text {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .header-menu-content {
+    gap: 14px;
+  }
+
+  .header-menu-link {
+    font-size: 13.5px;
+  }
+
   .story-container {
     padding: 28px 20px;
   }
@@ -528,10 +555,6 @@ html, body {
 
   .stack-card.card-footer {
     padding: 70px 24px 30px;
-  }
-
-  .header-logo-text {
-    font-size: 14px;
   }
 
   .footer-bottom-bar {
