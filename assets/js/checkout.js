@@ -187,89 +187,6 @@
     });
   }
 
-  // Payment Proof File Upload Handling
-  function handleProofFile(file) {
-    if (!file) return;
-
-    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
-      alert('Please upload a valid image (PNG, JPG, JPEG, WebP) or PDF receipt.');
-      return;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      alert('File size exceeds 10MB limit. Please upload a smaller file.');
-      return;
-    }
-
-    rawProofFile = file;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      proofFileData = {
-        name: file.name,
-        size: (file.size / 1024).toFixed(1) + ' KB',
-        dataUrl: e.target.result
-      };
-
-      if (proofImgThumb) {
-        if (file.type.startsWith('image/')) {
-          proofImgThumb.src = e.target.result;
-          proofImgThumb.style.display = 'block';
-        } else {
-          proofImgThumb.style.display = 'none';
-        }
-      }
-
-      if (proofFileName) proofFileName.textContent = file.name;
-      if (proofFileSize) proofFileSize.textContent = proofFileData.size;
-      if (proofPreviewCard) proofPreviewCard.classList.add('show');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  if (proofFileInput) {
-    proofFileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        handleProofFile(e.target.files[0]);
-      }
-    });
-  }
-
-  // Drag & drop support
-  if (proofDropzone) {
-    ['dragenter', 'dragover'].forEach((eventName) => {
-      proofDropzone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        proofDropzone.classList.add('dragover');
-      });
-    });
-
-    ['dragleave', 'drop'].forEach((eventName) => {
-      proofDropzone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        proofDropzone.classList.remove('dragover');
-      });
-    });
-
-    proofDropzone.addEventListener('drop', (e) => {
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        handleProofFile(e.dataTransfer.files[0]);
-      }
-    });
-  }
-
-  if (btnRemoveProof) {
-    btnRemoveProof.addEventListener('click', (e) => {
-      e.preventDefault();
-      rawProofFile = null;
-      proofFileData = null;
-      if (proofFileInput) proofFileInput.value = '';
-      if (proofPreviewCard) proofPreviewCard.classList.remove('show');
-    });
-  }
-
   // Generate Unique Order ID
   function generateOrderId() {
     const randomNum = Math.floor(10000 + Math.random() * 90000);
@@ -305,9 +222,6 @@
         return;
       }
 
-      const paymentMethodRadio = document.querySelector('input[name="payment_method"]:checked');
-      const paymentMethod = paymentMethodRadio ? paymentMethodRadio.value : 'ibft';
-
       const orderId = generateOrderId();
       const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
       const grandTotal = Math.max(0, subtotal + selectedShippingPrice - appliedDiscount);
@@ -332,11 +246,8 @@ ${itemsSummary}
 *Subtotal:* Rs ${subtotal.toLocaleString()}
 *Shipping:* Rs ${selectedShippingPrice}
 ${appliedDiscount > 0 ? `*Discount:* -Rs ${appliedDiscount}\n` : ''}*Total Amount:* Rs ${grandTotal.toLocaleString()}
-
-*Payment Method:* ${paymentMethod.toUpperCase()}
-*Payment Proof:* ${proofFileData ? 'Attached screenshot' : 'Sending receipt below'}
-${notes ? `*Notes:* ${notes}\n` : ''}--------------------------------
-Please confirm my order and share roasting & shipping updates.`;
+${notes ? `\n*Special Instructions:* ${notes}\n` : ''}--------------------------------
+Please confirm my order and share roasting & delivery updates.`;
 
       const encodedMessage = encodeURIComponent(whatsappMessage);
       const whatsappUrl = `https://wa.me/${STORE_WHATSAPP}?text=${encodedMessage}`;
