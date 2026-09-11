@@ -16,7 +16,7 @@
     cart = [];
   }
 
-  let selectedShippingPrice = 250;
+  let selectedShippingPrice = 0;
   let appliedDiscount = 0;
   let proofFileData = null;
 
@@ -70,7 +70,7 @@
 
     if (summaryCount) summaryCount.textContent = `(${totalCount} items)`;
     if (subtotalEl) subtotalEl.textContent = formatMoney(subtotal);
-    if (shippingEl) shippingEl.textContent = formatMoney(selectedShippingPrice);
+    if (shippingEl) shippingEl.textContent = selectedShippingPrice === 0 ? 'FREE' : formatMoney(selectedShippingPrice);
 
     if (appliedDiscount > 0 && discountRow && discountEl) {
       discountRow.style.display = 'flex';
@@ -126,7 +126,7 @@
       const parentCard = e.target.closest('.shipping-card');
       if (parentCard) parentCard.classList.add('selected');
 
-      selectedShippingPrice = Number(e.target.value) || 250;
+      selectedShippingPrice = Number(e.target.value) || 0;
       renderOrderSummary();
     });
   });
@@ -226,10 +226,17 @@
       const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
       const grandTotal = Math.max(0, subtotal + selectedShippingPrice - appliedDiscount);
 
+      // Payment method
+      const selectedPayment = document.querySelector('input[name="payment_method"]:checked')?.value;
+      let paymentMethodLabel = 'Bank Transfer / IBFT & Raast (Meezan Bank / JazzCash)';
+      if (selectedPayment === 'cod') {
+        paymentMethodLabel = 'Cash on Delivery (COD)';
+      }
+
       // Clean ASCII / Standard WhatsApp formatting (Universal compatibility)
       let itemsSummary = '';
       cart.forEach((item) => {
-        itemsSummary += `* ${item.qty}x ${item.name} (Rs ${item.price * item.qty})\n`;
+        itemsSummary += `* ${item.qty}x ${item.name} (Rs ${(item.price * item.qty).toLocaleString()})\n`;
       });
 
       const whatsappMessage = 
@@ -240,12 +247,13 @@
 *WhatsApp:* ${whatsapp}
 *Email:* ${email || 'N/A'}
 *Delivery Address:* ${address}, ${city}, ${province}
+*Payment Method:* ${paymentMethodLabel}
 
 *Ordered Items:*
 ${itemsSummary}
 *Subtotal:* Rs ${subtotal.toLocaleString()}
-*Shipping:* Rs ${selectedShippingPrice}
-${appliedDiscount > 0 ? `*Discount:* -Rs ${appliedDiscount}\n` : ''}*Total Amount:* Rs ${grandTotal.toLocaleString()}
+*Shipping:* ${selectedShippingPrice === 0 ? 'FREE (Rs 0)' : `Rs ${selectedShippingPrice.toLocaleString()}`}
+${appliedDiscount > 0 ? `*Discount:* -Rs ${appliedDiscount.toLocaleString()}\n` : ''}*Total Due:* Rs ${grandTotal.toLocaleString()}
 ${notes ? `\n*Special Instructions:* ${notes}\n` : ''}--------------------------------
 Please confirm my order and share roasting & delivery updates.`;
 
